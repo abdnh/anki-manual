@@ -4,8 +4,10 @@
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>التصفح - دليل استخدام أنكي</title>
+
+
         <!-- Custom HTML head -->
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
@@ -16,9 +18,11 @@
         <link rel="stylesheet" href="css/general.css">
         <link rel="stylesheet" href="css/chrome.css">
         <link rel="stylesheet" href="css/print.css" media="print">
+
         <!-- Fonts -->
         <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
         <link rel="stylesheet" href="fonts/fonts.css">
+
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="highlight.css">
         <link rel="stylesheet" href="tomorrow-night.css">
@@ -27,16 +31,18 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="css/kbd.css">
         <link rel="stylesheet" href="css/rtl.css">
+
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -52,7 +58,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -64,12 +70,14 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
+        <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -82,11 +90,33 @@
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
@@ -95,7 +125,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
@@ -115,6 +145,7 @@
                         <a href="https://github.com/abdnh/anki-manual" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
+
                     </div>
                 </div>
 
@@ -128,8 +159,9 @@
                         </ul>
                     </div>
                 </div>
+
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -178,7 +210,7 @@
 <h2 id="أوضاع-الجدول"><a class="header" href="#أوضاع-الجدول">أوضاع الجدول</a></h2>
 <p>يوفر أنكي 2.1.45+ وضعين لإظهار البطاقات والملحوظات في جدول البيانات.
 تستطيع تغيير الوضع الحالي بالضغط على الزر في الأعلى، على يسار منطقة البحث،
-أو بالضغط على <kbd>Alt</kbd>+<kbd>T</kbd>.
+أو بالضغط على <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd> أو <kbd>Cmd</kbd>+<kbd>Opt</kbd>+<kbd>T</kbd>.
 يوضح الزر ما إذا كانت ال<strong>بط</strong>اقات أو ال<strong>مل</strong>حوظات ظاهرة.</p>
 <p><strong>ملاحظة:</strong> للتبسيط، يفترض هذا الدليل أن وضع البطاقات قيد التفعيل.
 حيثما يرد ذكر تحديد/إيجاد/إلخ «البطاقات»، للقارئ أن يستبدلها بـ«البطاقات أو الملحوظات
@@ -247,9 +279,9 @@
 <p>يتغير لون الخلفية بناءً على البطاقة و الملحوظة. في وضع البطاقات، يطبق الشرط الموافق
 الأول:</p>
 <ol>
-<li>إذا كان للبطاقة مؤشر، استخدم لون المؤشر،</li>
-<li>إذا كانت البطاقة معلقة، استخدم اللون الأصفر،</li>
-<li>إذا كانت ملحوظة البطاقة معلّمة، استخدم اللون البنفسجي.</li>
+<li>إذا كان للبطاقة <strong>مؤشر</strong>، استخدم لون المؤشر،</li>
+<li>إذا كانت البطاقة <strong>معلقة</strong>، استخدم اللون الأصفر،</li>
+<li>إذا كانت ملحوظة <strong>البطاقة معلّمة</strong>، استخدم اللون البنفسجي.</li>
 </ol>
 <p>في وضع الملحوظات، يُطبَّق اللون على الملحوظات المعلمة فقط.
 لمزيد من المعلومات حول الملحوظات والبطاقات المعلمة،
@@ -261,7 +293,7 @@
 حسب عمودي السؤال والجواب.</p>
 <p>تتوفر كل العمودات في كل من <a href="#%D8%A3%D9%88%D8%B6%D8%A7%D8%B9-%D8%A7%D9%84%D8%AC%D8%AF%D9%88%D9%84">وضعي البطاقات والملحوظات</a>
 لكن بأسماء وبيانات مختلفة قليلًا أحيانًا. يوضح الجدول التالي سلوك الوضعين.</p>
-<table><thead><tr><th>عمود</th><th>وضع البطاقات</th><th>موضع الملحوظات</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>عمود</th><th>وضع البطاقات</th><th>موضع الملحوظات</th></tr></thead><tbody>
 <tr><td>الجواب</td><td>الجانب الخلفي للبطاقة بسطر واحد بدون جانب السؤال. تستطيع اختيار <a href="templates/styling.html#%D9%85%D8%B8%D9%87%D8%B1-%D8%A7%D9%84%D9%85%D8%AA%D8%B5%D9%81%D8%AD">صيغة مخصصة</a> في محرر نوع البطاقة.</td><td>مثل وضع البطاقات، لكن للبطاقة الأولى من الملحوظة فقط.</td></tr>
 <tr><td>البطاقة/البطاقات</td><td>اسم قالب البطاقة.</td><td>عدد بطاقات الملحوظة.</td></tr>
 <tr><td>تاريخ تعديل البطاقة</td><td>تاريخ آخر مرة أجريت فيها تغييرات على <strong>البطاقة</strong> (عندما راجعت البطاقة وتم تحديث تاريخ المراجعة والفواصل الزمنية مثلًا).</td><td>تاريخ آخر مرة أجريت فيها تغييرات على بطاقة من بطاقات الملحوظة.</td></tr>
@@ -278,6 +310,7 @@
 <tr><td>حقل الفرز</td><td>مثل وضع الملحوظات لملحوظة البطاقة.</td><td>محتوى حقل الملحوظة المعرف كحقل فرز نوع الملحوظة. فقط هذا الحقل يمكن عرضه والفرز حسبه. تستطيع تغيير حقل الفرز بالضغط على <strong>حقول...</strong> في منطقة التحرير.</td></tr>
 <tr><td>الوسوم</td><td>مثل وضع الملحوظات لملحوظة البطاقة.</td><td>وسوم الملحوظة.</td></tr>
 </tbody></table>
+</div>
 <h2 id="منطقة-التحرير"><a class="header" href="#منطقة-التحرير">منطقة التحرير</a></h2>
 <p>تظهر المنطقة السفلية اليمنى ملحوظة الصف المحدد حاليًا.
 لمزيد من المعلومات حول البطاقات والملحوظات، انظر قسم <a href="getting-started.html">الأساسيات</a>.
@@ -289,18 +322,19 @@
 <p>هناك شريط أدوات في أعلى نافذة المتصفح، فيه عدة قوائم توفر إجراءات عديدة يمكن تنفيذها
 على المتصفح.</p>
 <h3 id="تحرير"><a class="header" href="#تحرير">تحرير</a></h3>
-<table><thead><tr><th>اسم</th><th>إجراء</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>اسم</th><th>إجراء</th></tr></thead><tbody>
 <tr><td>تراجع</td><td>يتراجع عن آخر عملية مجراة.</td></tr>
 <tr><td>تحديد الكل</td><td>يحدد كل صفوف الجدول.</td></tr>
 <tr><td>تحديد الملحوظات</td><td>يظهر الملحوظات المحددة حاليًا فقط ويحدد كل الصفوف.</td></tr>
 <tr><td>عكس المحدد</td><td>يحدد الصفوف غير المحددة ويلغي تحديد الصفوف المحددة.</td></tr>
 <tr><td>إنشاء رزمة مفلترة</td><td>يظهر نافذة <a href="filtered-decks.html#%D8%A5%D9%86%D8%B4%D8%A7%D8%A1-%D9%8A%D8%AF%D9%88%D9%8A">الرزمة المفلترة</a> ويضبط بحث المتصفح الحالي كفلتر الرزمة. استخدم <kbd>Alt</kbd> / <kbd>Option</kbd> لضبط فلتر ثانٍ (يتطلب المجدول الإصدار 2).</td></tr>
 </tbody></table>
+</div>
 <h3 id="الملحوظات"><a class="header" href="#الملحوظات">الملحوظات</a></h3>
 <p>معظم الإجراءات التالية تعمل على الملحوظات المحددة. تتوفر أيضًا من خلال قائمة منبثقة
 عند الضغط بزر الفأرة الأيمن على صف محدد في وضع الملحوظات. في وضع البطاقات، يمكن إيجادها
 في قائمة فرعية من القائمة المنبثقة.</p>
-<table><thead><tr><th>اسم</th><th>إجراء</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>اسم</th><th>إجراء</th></tr></thead><tbody>
 <tr><td>إضافة ملحوظات</td><td>يفتح نافذة <a href="editing.html#%D8%A5%D8%B6%D8%A7%D9%81%D8%A9-%D8%A8%D8%B7%D8%A7%D9%82%D8%A7%D8%AA-%D9%88%D9%85%D9%84%D8%AD%D9%88%D8%B8%D8%A7%D8%AA">إضافة الملحوظات</a>.</td></tr>
 <tr><td>تصدير ملحوظات</td><td>يفتح نافذة <a href="exporting.html">التصدير</a>.</td></tr>
 <tr><td>إضافة وسوم</td><td>يضيف الوسوم المعطاة إلى كل الملحوظات المحددة.</td></tr>
@@ -312,11 +346,12 @@
 <tr><td>إدارة أنواع الملحوظات</td><td>يفتح نافذة <a href="editing.html#%D8%A5%D8%B6%D8%A7%D9%81%D8%A9-%D9%86%D9%88%D8%B9-%D9%85%D9%84%D8%AD%D9%88%D8%B8%D8%A9">الملحوظات</a>.</td></tr>
 <tr><td>حذف</td><td>يحذف كل الملحوظات المحددة وبطاقاتها. لا يمكن حذف بطاقات بدون حذف ملحوظاتها، حيث إن البطاقات محكومة <a href="templates/intro.html">بالقوالب</a>.</td></tr>
 </tbody></table>
+</div>
 <h3 id="البطاقات"><a class="header" href="#البطاقات">البطاقات</a></h3>
 <p>تعمل الإجراءات التالية على البطاقات المحددة حاليًا. تتوفر أيضًا من خلال نافذة منبثقة
 عند الضغط بزر الفأرة الأيمن على صف محدد في وضع البطاقات. في وضع الملحوظات،
 يمكن إيجادها في قائمة فرعية من القائمة المنبثقة.</p>
-<table><thead><tr><th>اسم</th><th>إجراء</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>اسم</th><th>إجراء</th></tr></thead><tbody>
 <tr><td>تغيير الرزمة</td><td>ينقل البطاقات المحددة إلى رزمة مختلفة.</td></tr>
 <tr><td>ضبط تاريخ الاستحقاق</td><td>يجعل البطاقات بطاقات مراجعة ويجعلها مستحقة في تاريخ محدد. قد يكون هذا مفيدًا لنقل البطاقات بضع أيام إلى الأمام أو الخلف عندما تنقطع عن الدراسة لمدة. إدخال نطاق مثل <code>60-90</code> يعطي البطاقات فاصلًا زمنيًا بين الـ60 والـ90 يومًا، والذي قد يكون مفيدًا عندما تستورد مواد تعرفها من قبل.</td></tr>
 <tr><td>نسيان</td><td>ينقل البطاقات المحددة إلى آخر صف البطاقات الجديدة. يتم الاحتفاظ بسجل المراجعة الموجود.</td></tr>
@@ -325,6 +360,7 @@
 <tr><td>تأشير</td><td>يغير حالة مؤشرات كل البطاقات المحددة. يعتمد ما إذا كان الخيار يضيف مؤشرًا أم يحذفه على المؤشرات الخاصة بالبطاقة الحالية.</td></tr>
 <tr><td>معلومات</td><td>يظهر معلومات منوعة عن البطاقة الحالية، بما في ذلك سجل مراجعتها. لمزيد من المعلومات، انظر قسم <a href="stats.html#%D9%85%D8%B9%D9%84%D9%88%D9%85%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%B7%D8%A7%D9%82%D8%A9">معلومات البطاقة</a>.</td></tr>
 </tbody></table>
+</div>
 <h3 id="الذهاب"><a class="header" href="#الذهاب">الذهاب</a></h3>
 <p>توجد هذه القائمة لتوفير اختصارات لوحة مفاتيح للتنقل بين أقسام مختلفة من المتصفح،
 وللتنقل أعلى وأسفل في قائمة البطاقات.</p>
@@ -400,9 +436,11 @@
                             <a rel="prev" href="profiles.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
+
                             <a rel="next" href="filtered-decks.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
+
                         <div style="clear: both"></div>
                     </nav>
                 </div>
@@ -412,6 +450,7 @@
                     <a rel="prev" href="profiles.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
+
                     <a rel="next" href="filtered-decks.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
@@ -419,17 +458,26 @@
 
         </div>
 
-        <script type="text/javascript">
+
+
+
+        <script>
             window.playground_copyable = true;
         </script>
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="lunr.ar.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="lunr.ar.js" type="text/javascript"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
 
         <!-- Custom JS scripts -->
+
+
+    </div>
     </body>
 </html>
