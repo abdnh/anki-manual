@@ -31,6 +31,7 @@
   - [استبدالات الحقول](templates/fields.md)
   - [توليد البطاقات](templates/generation.md)
   - [التنسيق و HTML](templates/styling.md)
+  - [الفحوصات والأخطاء](templates/errors.md)
 - [تفضيلات](preferences.md)
 - [خيارات الرزمة](deck-options.md)
 - [المزامنة مع أنكي ويب](syncing.md)
