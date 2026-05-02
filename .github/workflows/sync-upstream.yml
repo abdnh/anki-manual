@@ -1,0 +1,66 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Add upstream remote and fetch
+        run: |
+          git remote add upstream https://github.com/ankitects/anki-manual.git
+          git fetch upstream
+          git fetch origin upstream
+
+      - name: Find new upstream commits
+        id: find
+        run: |
+          echo "count=$(git rev-list --count origin/upstream..upstream/main)" >> $GITHUB_OUTPUT
+          git rev-list --reverse origin/upstream..upstream/main > new-commits.txt
+
+      - name: Create issues for new commits
+        if: steps.find.outputs.count != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          while IFS= read -r sha; do
+            title="$(git log -1 --format='[%cs] Sync upstream commit %h' "$sha" | head -c 72)"
+
+            if gh issue list --label sync --json title -q '.[] | select(.title | startswith("[\($sha[0..6])")) | .title' | grep -q .; then
+              echo "Issue already exists for $sha, skipping"
+              continue
+            fi
+
+            body="## Upstream commit
+            - **SHA**: \`${sha}\`
+            - **Date**: $(git log -1 --format='%cs' "$sha")
+            - **Author**: $(git log -1 --format='%an' "$sha")
+            - **Link**: https://github.com/ankitects/anki-manual/commit/${sha}
+
+            ## Message
+            $(git log -1 --format='%B' "$sha")
+
+            ## Changes
+            $(git diff origin/upstream..upstream/main --stat)"
+
+            gh issue create \
+              --title "$title" \
+              --body "$body" \
+              --label sync
+            echo "Created issue for $sha"
+          done < new-commits.txt
+
+      - name: Update origin/upstream
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          git push origin upstream/main:refs/heads/upstream
