@@ -33,6 +33,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
+          gh repo set-default "$GITHUB_REPOSITORY"
+
           while IFS= read -r sha; do
             short="${sha:0:7}"
             title="$(git log -1 --format='[%cs] Sync upstream commit %h' "$sha" | head -c 72)"
