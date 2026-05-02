@@ -34,7 +34,7 @@ jobs:
           while IFS= read -r sha; do
             title="$(git log -1 --format='[%cs] Sync upstream commit %h' "$sha" | head -c 72)"
 
-            if gh issue list --label sync --json title -q '.[] | select(.title | startswith("[\($sha[0..6])")) | .title' | grep -q .; then
+            if gh issue list --label sync --json title -q '.[] | select(.title | startswith("[\($sha[0:7])")) | .title' | grep -q .; then
               echo "Issue already exists for $sha, skipping"
               continue
             fi
