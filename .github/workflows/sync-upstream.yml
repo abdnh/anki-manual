@@ -52,10 +52,7 @@ jobs:
             - **Link**: https://github.com/ankitects/anki-manual/commit/${sha}
 
             ## Message
-            $(git log -1 --format='%B' "$sha")
-
-            ## Changes
-            $(git diff origin/upstream..upstream/main --stat)"
+            $(git log -1 --format='%B' "$sha")"
 
             gh issue create \
               --title "$title" \
