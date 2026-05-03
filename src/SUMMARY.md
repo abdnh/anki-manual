@@ -41,6 +41,7 @@
 - [البحث](searching.md)
 - [الاستيراد](importing.md)
 - [التصدير](exporting.md)
+- [النسخ الاحتياطية](backups.md)
 - [إدارة الملفات](files.md)
 - [إحصائيات](stats.md)
 - [وسائط](media.md)
