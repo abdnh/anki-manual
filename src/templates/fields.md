@@ -167,7 +167,7 @@
 .android .ankitts {
   display: none;
 }
-:not(.android) .ankidroidtts {
+html:not(.android) .ankidroidtts {
   display: none;
 }
 ```
