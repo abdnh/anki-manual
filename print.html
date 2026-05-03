@@ -649,7 +649,7 @@ start &quot;Anki&quot; &quot;C:\Program Files\Anki\anki&quot;
 <li>افتح الطرفية ونفذ الأوامر التالية، مع استبدال رقم الإصدار كما هو مناسب.</li>
 </ol>
 <pre><code class="language-shell">tar xjf Downloads/anki-2.1.XX-linux.tar.bz2
-cd anki-2.1.XX-linux
+cd anki-2.1.XX-linux-qt6
 sudo ./install.sh
 </code></pre>
 <ol start="3">
@@ -692,7 +692,7 @@ sudo ./install.sh
 <li>افتح الطرفية ونفذ الأوامر التالية، مع استبدال رقم الإصدار كما هو مناسب.</li>
 </ol>
 <pre><code class="language-shell">tar xjf Downloads/anki-2.1.XX-linux.tar.bz2
-cd anki-2.1.XX-linux
+cd anki-2.1.XX-linux-qt6
 sudo ./install.sh
 </code></pre>
 <ol start="3">
@@ -1761,6 +1761,17 @@ SuperMemo --
 </code></pre>
 </div>
 <p>فلتر cloze-only مدعوم في أنكي 2.1.29+ وأنكي موبيل 2.0.65+.</p>
+<p>يمكنك تفعيل ميزة تحويل النص إلى كلام في المنصات المدعومة بجانب <a href="https://docs.ankidroid.org/#_workarounds">طريقة أنكيدرويد</a> من خلال وضع كود كهذا في القوالب:</p>
+<pre><code class="language-html">&lt;span class=&quot;ankidroidtts&quot;&gt;&lt;tts service=&quot;android&quot; voice=&quot;en_US&quot;&gt;{{Front}}&lt;/tts&gt;&lt;/span&gt;&lt;span class=&quot;ankitts&quot;&gt;{{tts en_US:Front}}&lt;/span&gt;
+</code></pre>
+<p>في قسم التنسيق:</p>
+<pre><code class="language-css">.android .ankitts {
+  display: none;
+}
+html:not(.android) .ankidroidtts {
+  display: none;
+}
+</code></pre>
 <h2 id="special-fields"><a class="header" href="#special-fields">حقول خاصة</a></h2>
 <p>هناك حقول خاصة يمكنك تضمينها في القوالب:</p>
 <div dir="ltr">
@@ -4944,12 +4955,12 @@ Folders Outside Dropbox (archive.org)</a> لمزيد من المعلومات.</p
 <p>لا يأتي دعم LaTeX في أنكي جاهزًا: يُفترض أنك تعرف كيف تستخدم LaTeX بالفعل،
 وأنك نصبته من قبل. إذا لم تكن لديك خبرة مع LaTeX، اطلع على واحد من الدلائل الكثيرة
 المتوفرة على الإنترنت. إذا كانت لديك مشكلة مع بعض أكواد LaTeX، الرجاء السؤال في منتدى لـ LaTeX.</p>
-<p>لتنصيب LaTeX، في ويندوز استخدم MiKTeX؛ في أو إس إكس استخدم MacTex، وفي لينكس
+<p>لتنصيب LaTeX، في ويندوز استخدم MiKTeX ؛ في أو إس إكس استخدم MacTeX، وفي لينكس
 استخدم مدير الحزمات الخاص بتوزيعتك. يجب تنصيب Dvipng أيضًا.</p>
-<p>في ويندوز، اذهب إلى قائمة صيانة MikTek، وتأكد من أن خيار &quot;Install missing packages on the fly&quot;
-مضبوط لـ &quot;No&quot;، وليس &quot;Ask me first&quot;. إذا ما زلت تواجه مشاكل، فقد أبلغ مستخدم أن
+<p>في ويندوز، اذهب إلى قائمة صيانة MikTeX، وتأكد من أن خيار &quot;Install missing packages on the fly&quot;
+مضبوط لـ &quot;Always&quot;، وليس &quot;Ask me first&quot;. إذا ما زلت تواجه مشاكل، فقد أبلغ مستخدم أن
 تشغيل أنكي كمسؤول حتى تُنزَّل كل الحزم ساعد على حل المشكلة.</p>
-<p>في أو إس إكس، تم اختبار LaTeX مع MacTex و BasicTex فقط. إذا كنت تستخدم BasicTex،
+<p>في أو إس إكس، تم اختبار LaTeX مع MacTeX و BasicTeX فقط. إذا كنت تستخدم BasicTeX،
 فعليك تنصيب dvipng بشكل منفصل باستخدام الأمر التالي:</p>
 <div dir="ltr">
 <pre><code>sudo tlmgr update --self; sudo tlmgr install dvipng
@@ -5045,7 +5056,7 @@ Folders Outside Dropbox (archive.org)</a> لمزيد من المعلومات.</p
 \end{document}
 </code></pre>
 </div>
-<p>أولًا، اتبع تعليمات التوثيق للحزمة و MiKTeX/MacTex لتنصيب الحزمة.
+<p>أولًا، اتبع تعليمات التوثيق للحزمة و MiKTeX/MacTeX لتنصيب الحزمة.
 للتحقق من عمل الحزمة، فسترغب في وضع كود مثل الأعلى في ملف <span dir="ltr">.latex</span>
 وتجربة ما إذا كان يمكنك بناؤه من سطر الأوامر. بعد التأكد من أن الحزمة متوفرة وتعمل،
 تستطيع تضمينها في أنكي.</p>

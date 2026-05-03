@@ -300,6 +300,17 @@
 </code></pre>
 </div>
 <p>فلتر cloze-only مدعوم في أنكي 2.1.29+ وأنكي موبيل 2.0.65+.</p>
+<p>يمكنك تفعيل ميزة تحويل النص إلى كلام في المنصات المدعومة بجانب <a href="https://docs.ankidroid.org/#_workarounds">طريقة أنكيدرويد</a> من خلال وضع كود كهذا في القوالب:</p>
+<pre><code class="language-html">&lt;span class=&quot;ankidroidtts&quot;&gt;&lt;tts service=&quot;android&quot; voice=&quot;en_US&quot;&gt;{{Front}}&lt;/tts&gt;&lt;/span&gt;&lt;span class=&quot;ankitts&quot;&gt;{{tts en_US:Front}}&lt;/span&gt;
+</code></pre>
+<p>في قسم التنسيق:</p>
+<pre><code class="language-css">.android .ankitts {
+  display: none;
+}
+html:not(.android) .ankidroidtts {
+  display: none;
+}
+</code></pre>
 <h2 id="special-fields"><a class="header" href="#special-fields">حقول خاصة</a></h2>
 <p>هناك حقول خاصة يمكنك تضمينها في القوالب:</p>
 <div dir="ltr">
