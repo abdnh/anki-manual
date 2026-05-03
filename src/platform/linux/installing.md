@@ -4,7 +4,7 @@
 
 ## المتطلبات {#requirements}
 
-تتطلب النسخة المحزمة دعم لينكس <span dir="ltr">Intel/AMD</span> 64 بت، ومكتبات شائعة مثل libwayland-client و systemd.
+تتطلب النسخة المحزمة دعم لينكس <span dir="ltr">Intel/AMD</span> 64 بت مع glibc، ومكتبات شائعة مثل libwayland-client و systemd.
 إذا كانت معمارية جهازك مختلفة، أو تستخدم توزيعة لينكس صغيرة، فلن يمكنك استخدام النسخة المحزمة،
 لكن قد تستطيع استخدام
 [الـwheels الخاصة ببايثون](https://betas.ankiweb.net/#via-pypipip)
@@ -17,6 +17,8 @@ sudo apt install libxcb-xinerama0
 ```
 
 إذا فشل بدء أنكي بعد التنصيب، فقد تكون هناك [مكتبات ناقصة أخرى](./missing-libraries.md).
+
+أنكي يدعم glibc فقط. التوزيعات المبنية على musl غير مدعومة حاليًا.
 
 ## التنصيب {#installing}
 
