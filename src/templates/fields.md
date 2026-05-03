@@ -155,6 +155,23 @@
 
 فلتر cloze-only مدعوم في أنكي 2.1.29+ وأنكي موبيل 2.0.65+.
 
+يمكنك تفعيل ميزة تحويل النص إلى كلام في المنصات المدعومة بجانب [طريقة أنكيدرويد](https://docs.ankidroid.org/#_workarounds) من خلال وضع كود كهذا في القوالب:
+
+```html
+<span class="ankidroidtts"><tts service="android" voice="en_US">{{Front}}</tts></span><span class="ankitts">{{tts en_US:Front}}</span>
+```
+
+في قسم التنسيق:
+
+```css
+.android .ankitts {
+  display: none;
+}
+:not(.android) .ankidroidtts {
+  display: none;
+}
+```
+
 ## حقول خاصة {#special-fields}
 
 هناك حقول خاصة يمكنك تضمينها في القوالب:
