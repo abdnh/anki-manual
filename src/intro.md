@@ -19,7 +19,7 @@
 - [Português Brasileiro](https://mizerablebr.github.io/anki-manual/)
 - [русский язык](https://alexeygorelov.github.io/anki-manual-ru/)
 - [العربية](https://abdnh.github.io/anki-manual/) (هذه النسخة)
-- [فارسى](http://ankidroid.ir/anki.pdf)
+- [فارسى](https://web.archive.org/web/20250328102629/http://ankidroid.ir/anki.pdf)
 - [日本語](http://wikiwiki.jp/rage2050/?FrontPage)
 - [简体中文](http://www.ankichina.net/manual/anki/)
 
